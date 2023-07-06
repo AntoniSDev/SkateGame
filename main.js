@@ -30,8 +30,7 @@ const bancPositions = Array.from(
   (_, i) => (i * CANVAS_WIDTH) / 10
 );
 
-const music = new Audio('music.mp3');
-music.loop = true; // Activer la lecture en boucle pour la musique
+
 const skateRouleSound = new Audio('skateRoule.mp3');
 skateRouleSound.loop = true; // Activer la lecture en boucle pour le son de roulement
 
@@ -130,6 +129,8 @@ class Player {
     }
   }
 
+  
+
   update() {
     if (this.isJumping) {
       this.velocityY += this.gravity;
@@ -157,6 +158,7 @@ class Player {
       this.jumpStartTime = Date.now();
     }
   }
+
 }
 
 const player = new Player();
@@ -214,7 +216,6 @@ function animationLoop() {
   player.update();
 }
 
-// Ajout de la musique
-music.play();
+
 
 animationLoop();
