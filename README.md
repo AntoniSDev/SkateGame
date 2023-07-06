@@ -21,7 +21,9 @@ Ce projet consiste en la création d'un jeu en JavaScript en seulement deux jour
 
 ![Logo](accueil_sans_bouton.png)
 
+
 ## Vidéo promotionnelle
-à télécharger dans les fichier du projet.
+[à télécharger dans les fichier du projet](https://github.com/AntoniSDev/SkateGame/blob/main/VideoPromotionelleGameJam.mp4).
+
 
 Pour plus de détails et de contributions, veuillez vous référer au dépôt GitHub du projet.
