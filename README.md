@@ -21,6 +21,11 @@ Ce projet consiste en la création d'un jeu en JavaScript en seulement deux jour
 
 ![Logo](accueil_sans_bouton.png)
 
-Le logo du projet est disponible dans le dossier GitHub à la racine du projet.
+## Vidéo promotionnelle
+
+<video controls>
+    <source src="VideoPromotionelleGameJam.mp4" type="video/mp4">
+    Votre navigateur ne prend pas en charge la balise vidéo.
+</video>
 
 Pour plus de détails et de contributions, veuillez vous référer au dépôt GitHub du projet.
