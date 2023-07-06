@@ -24,6 +24,8 @@ const skaterImage1 = new Image();
 skaterImage1.src = "img/skater1.png";
 const skaterImage2 = new Image();
 skaterImage2.src = "img/skater2.png";
+const skaterImage3 = new Image();
+skaterImage3.src = "img/skater3.png";
 
 const bancPositions = Array.from(
   { length: 10 },
@@ -33,6 +35,8 @@ const bancPositions = Array.from(
 
 const skateRouleSound = new Audio('skateRoule.mp3');
 skateRouleSound.loop = true; // Activer la lecture en boucle pour le son de roulement
+
+const crashSound = new Audio('crash.mp3');
 
 class Layer {
   constructor(image, speedModifier) {
@@ -45,7 +49,7 @@ class Layer {
     this.speedModifier = speedModifier;
     this.speed = gameSpeed * this.speedModifier;
   }
-  
+
   update() {
     this.speed = gameSpeed * this.speedModifier;
     if (this.x <= -this.width) {
@@ -57,13 +61,12 @@ class Layer {
     this.x = Math.floor(this.x - this.speed);
     this.x2 = Math.floor(this.x2 - this.speed);
   }
-  
+
   drawImage() {
     c.drawImage(this.image, this.x, this.y, this.width, this.height);
     c.drawImage(this.image, this.x2, this.y, this.width, this.height);
   }
 }
-
 
 class BancLayer {
   static activeBancs = []; // Ajout d'une propriété de classe pour stocker les bancs actifs
@@ -92,7 +95,7 @@ class BancLayer {
   }
 
   drawImage() {
-    c.drawImage(this.image, this.x, this.y, this.width, this.height);
+   c.drawImage(this.image, this.x, this.y, this.width, this.height);
   }
 }
 
@@ -119,25 +122,24 @@ class Player {
 
     this.skateJumpSound = new Audio('skateJump.mp3');
     this.skateRetombeSound = new Audio('skateRetombe.mp3');
+    this.image = skaterImage1; // Image initiale du joueur
   }
 
   render() {
     if (this.isJumping) {
-      c.drawImage(skaterImage2, this.position.x, this.position.y, this.jumpWidth, this.jumpHeight);
+      c.drawImage(this.image, this.position.x, this.position.y, this.jumpWidth, this.jumpHeight);
     } else {
-      c.drawImage(skaterImage1, this.position.x, this.position.y, this.width, this.height);
+      c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
     }
   }
-
-  
 
   update() {
     if (this.isJumping) {
       this.velocityY += this.gravity;
       this.position.y += this.velocityY;
-      
+
       if (this.position.y >= world.height - this.height - 60) {
-        this.position.y = world.height - this.height- 60;
+        this.position.y = world.height - this.height - 60;
         this.velocityY = 0;
         this.isJumping = false;
         this.skateRetombeSound.play();
@@ -145,7 +147,33 @@ class Player {
       }
     } else {
       skateRouleSound.play();
+
+      // Vérifier la collision avec les bancs actifs
+      const playerRect = {
+        x: this.position.x,
+        y: this.position.y,
+        width: this.width,
+        height: this.height,
+      };
+
+      BancLayer.activeBancs.forEach((banc) => {
+        const bancRect = {
+          x: banc.x,
+          y: banc.y,
+          width: banc.width,
+          height: banc.height,
+        };
+
+        if (checkCollision(playerRect, bancRect)) {
+          // Collision détectée entre le joueur et un banc
+          this.image = skaterImage3; // Changer l'image du joueur à "joueur3.png"
+          skateRouleSound.pause(); // Mettre en pause le son de roulement
+          crashSound.play(); // Jouer le son de crash
+          console.log("Collision avec un banc !");
+        }
+      });
     }
+
     this.render();
   }
 
@@ -158,7 +186,6 @@ class Player {
       this.jumpStartTime = Date.now();
     }
   }
-
 }
 
 const player = new Player();
@@ -204,18 +231,27 @@ for (let i = 0; i < 3; i++) {
 var tempsAleatoire = Math.floor(Math.random() * (5000 - 2000 + 1)) + 2000;
 setInterval(genererObjet, tempsAleatoire);
 
-
+function checkCollision(rect1, rect2) {
+  if (
+    rect1.x < rect2.x + rect2.width &&
+    rect1.x + rect1.width > rect2.x &&
+    rect1.y < rect2.y + rect2.height &&
+    rect1.y + rect1.height > rect2.y
+  ) {
+    // Collision détectée
+    return true;
+  }
+  return false;
+}
 
 function animationLoop() {
   requestAnimationFrame(animationLoop);
   c.clearRect(0, 0, world.width, world.height);
-  gameFond.forEach(obj => {
+  gameFond.forEach((obj) => {
     obj.update();
     obj.drawImage();
   });
   player.update();
 }
-
-
 
 animationLoop();
