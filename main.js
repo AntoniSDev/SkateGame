@@ -107,8 +107,8 @@ class Player {
   constructor() {
     this.width = 100;
     this.height = 150;
-    this.jumpWidth = 130; // Largeur de l'image du skateur en saut
-    this.jumpHeight = 100; // Hauteur de l'image du skateur en saut
+    this.jumpWidth = 80; // Largeur de l'image du skateur en saut
+     
     this.position = {
       x: (world.width - this.width) / 40,
       y: world.height - this.height - 60,
@@ -166,7 +166,7 @@ class Player {
 
         if (checkCollision(playerRect, bancRect)) {
           // Collision détectée entre le joueur et un banc
-          this.image = skaterImage3; // Changer l'image du joueur à "joueur3.png"
+          
           skateRouleSound.pause(); // Mettre en pause le son de roulement
           crashSound.play(); // Jouer le son de crash
           console.log("Collision avec un banc !");
